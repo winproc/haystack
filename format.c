@@ -20,6 +20,8 @@ void export_csv(char** content_buf, int limit) {
             fputc(',', file);
         }
 
+        content_buf[i][stlen - 1] = '\n'; // readd newline
+
         i++;
     }
 
@@ -33,11 +35,28 @@ void export_json(char** content_buf, int limit) {
     FILE* file;
     fopen_s(&file, "export.json", "w");
 
-    fputc('{', file); // starter
+    fputc('[', file); // marker
 
-    fprintf(file, "\"%s\"", "test");
+    int i = 0;
+    while ((content_buf[i] != 0x0) && (i <= limit)) {
 
-    fputc('}', file); // terminator
+        size_t stlen = strlen(content_buf[i]); 
+
+        content_buf[i][stlen - 1] = '\0'; // remove newline
+
+        fprintf(file, "\"%s\"", content_buf[i]);
+
+        if (content_buf[i + 1] != 0x0 && (i + 1) <= limit) {
+            fputc(',', file);
+        }
+
+        content_buf[i][stlen - 1] = '\n'; // readd newline
+
+        i++;
+    }
+    
+
+    fputc(']', file); // terminator
 
     fclose(file);
 
