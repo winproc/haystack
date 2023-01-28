@@ -1,5 +1,5 @@
 # haystack
-haystack is a light data management system
+haystack is a light database manager
 
 > Up to 1024 elements in a table
 
